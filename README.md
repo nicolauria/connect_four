@@ -22,10 +22,10 @@ Or install it yourself as:
 
 ## Usage
 
-Run the command line appplication with:
+Run the command line application with:
 
     $ captains_mistress
 
-Or, if the gem is not installated, run from the gem directory:
+Or, if the gem is not installed, run from the gem directory:
 
     $ ruby -Ilib bin/captains_mistress
