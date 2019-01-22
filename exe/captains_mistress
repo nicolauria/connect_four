@@ -23,6 +23,23 @@ OptionParser.new do |opts|
     puts CaptainsMistress::VERSION
     exit
   end
+
+  opts.on('--width NUM', Integer, 'Set width of game board') do |w|
+    options[:width] = w
+  end
+
+  opts.on('--height NUM', Integer, 'Set height of game board') do |h|
+    options[:height] = h
+  end
+
+  opts.on('--length LEN', Integer, 'Set length of winning streak') do |l|
+    options[:length] = l
+  end
+
+  opts.on('--strict', 'Require winning streak be exact length') do |s|
+    options[:strict] = s
+  end
+
 end.parse!(args)
 
 CaptainsMistress::App.new(options).run

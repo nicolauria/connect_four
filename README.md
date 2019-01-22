@@ -1,31 +1,43 @@
-# CaptainsMistress
+## Install
 
-This is the game "Captain's Mistress", also known as "Connect Four" (which is a
-registered trademark of The Milton Bradley Company). For more information see
-the [wikipedia article](https://en.wikipedia.org/wiki/Connect_Four).
-
-## Installation
-
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'captains_mistress'
+cd into root and run
+```
+rake install
 ```
 
-And then execute:
+## Run Program
 
-    $ bundle
+See game options below for additional features. For the main program:
+```
+captains_mistress
+```
 
-Or install it yourself as:
+## Game Options
+set **width** & **height** of game board
+```
+captains_mistress --width 10 --height 8
+```
 
-    $ gem install captains_mistress
+set **length** of winning streak
+```
+captains_mistress --length 5
+```
 
-## Usage
+turn on **strict** mode (winning streak must be exact length)
+```
+captains_mistress --strict
+```
 
-Run the command line application with:
+all above options can be combined
+```
+captains_mistress --width 10 --height 8 --length 5 --strict
+```
 
-    $ captains_mistress
+## Program Code
 
-Or, if the gem is not installed, run from the gem directory:
+game options specified in exe/captains_mistress<br>
+program contained in lib/captains_mistress/app.rb
 
-    $ ruby -Ilib bin/captains_mistress
+## Tests (Rspec)
+
+currently there are 4 tests that validate the **check_game_for_winner?(col)** method
