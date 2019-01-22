@@ -110,29 +110,23 @@ module CaptainsMistress
     end
 
     def check_board_for_winner?(col)
-      # do not need to check until player has had enough minimum possible turns
+      # do not need to check until players have had enough minimum possible turns
       return false if @turn_count < (@winning_streak_length * 2 - 1)
-      
+
       # directions builds all horizontal, vertical, and diagonal combinations
-      directions = [[1, 1], [1, -1], [-1, 1], [-1, -1],
-                    [1, 0], [-1, 0], [0, 1], [0, -1]]
+      directions = [[1, 1], [1, -1], [1, 0], [0, 1]]
       directions.each do |dir|
+        # start at 1 to count for added move
         length = 1
 
-        next_col = col + dir[0]
-        # we push new moves into a col so @board[col].length - 1 = current row
-        next_row = (@board[col].length - 1) + dir[1]
-        # added_val = the move we just added to @board
+        # pos represents the colmumn and row of the added move
+        pos = [col, @board[col].length - 1]
+        # the value of the added move
         added_val = @board[col][-1]
 
-        # we break the loop as soon as a row or col is out of bounds
-        # we also break as soon as two consecutive values are not matching
-        while valid_matching_next_val(next_col, next_row, added_val)
-          length += 1
-          # continue moving in that direction while valid
-          next_col += dir[0]
-          next_row += dir[1]
-        end
+        # using dir, traverse @board both left/right or up/down
+        length += streak_in_positive_direction(pos, dir, added_val)
+        length += streak_in_negative_direction(pos, dir, added_val)
 
         # check length and return @current_player as winner if conidtion is met
         if @strict_winning_streak
@@ -145,10 +139,25 @@ module CaptainsMistress
       false
     end
 
-    def valid_matching_next_val(next_col, next_row, added_val)
-      (next_col > -1 && next_col < @width) &&
-      (next_row > -1 && next_row < @height) &&
-      added_val == @board[next_col][next_row]
+    # returns a number representing the length of the streak
+    # traveral ends as soon as in_bounds_matching_val? == false
+    def streak_in_positive_direction(pos, dir, added_val)
+      next_pos = [pos[0] + dir[0], pos[1] + dir[1]]
+      return 0 unless in_bounds_matching_val?(next_pos, added_val)
+      return 1 + streak_in_positive_direction(next_pos, dir, added_val)
+    end
+
+    def streak_in_negative_direction(pos, dir, added_val)
+      next_pos = [pos[0] - dir[0], pos[1] - dir[1]]
+      return 0 unless in_bounds_matching_val?(next_pos, added_val)
+      return 1 + streak_in_negative_direction(next_pos, dir, added_val)
+    end
+
+    def in_bounds_matching_val?(pos, added_val)
+      col, row = pos
+      (col > -1 && col < @width) &&
+      (row > -1 && row < @height) &&
+      @board[col][row] == added_val
     end
 
     def switch_players
